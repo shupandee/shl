@@ -1,0 +1,16 @@
+# Render deployment config
+# Deploy at: https://render.com
+# Set GOOGLE_API_KEY in Render environment variables
+
+services:
+  - type: web
+    name: shl-recommender
+    runtime: python
+    buildCommand: pip install -r requirements.txt && python build_index.py
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false   # Set this manually in Render dashboard
+    healthCheckPath: /health
+    autoDeploy: true
+    plan: free
